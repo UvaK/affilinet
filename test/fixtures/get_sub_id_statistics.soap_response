@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+Date: Thu, 16 Sep 2010 14:12:25 GMT
+Server: Microsoft-IIS/6.0
+X-Powered-By: ASP.NET
+X-AspNet-Version: 2.0.50727
+Cache-Control: private
+Content-Type: text/xml; charset=utf-8
+Content-Length: 1371
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetSubIdStatisticsResponse xmlns="http://affilinet.framework.webservices/Svc"><SubIdStatisticsRecords xmlns:a="http://affilinet.framework.webservices/types/PublisherStatistics" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><a:TotalPrice>157.16</a:TotalPrice><a:TotalPayment>24.00</a:TotalPayment><a:Records><a:SubIdStatisticsRecord><a:Date>2010-07-02T00:00:00</a:Date><a:Number>-2077031236</a:Number><a:SubId></a:SubId><a:ProgramId>1332</a:ProgramId><a:ProgramTitle>Friesen Versand</a:ProgramTitle><a:Transaction>L</a:Transaction><a:Price>47.00</a:Price><a:Commission>11.50</a:Commission><a:Confirmed>11.50</a:Confirmed><a:CheckDate>2010-07-02T00:00:00</a:CheckDate><a:TransactionStatus>Confirmed</a:TransactionStatus></a:SubIdStatisticsRecord><a:SubIdStatisticsRecord><a:Date>2010-07-02T00:00:00</a:Date><a:Number>-2077031216</a:Number><a:SubId></a:SubId><a:ProgramId>1332</a:ProgramId><a:ProgramTitle>Friesen Versand</a:ProgramTitle><a:Transaction>L</a:Transaction><a:Price>110.16</a:Price><a:Commission>12.50</a:Commission><a:Confirmed>12.50</a:Confirmed><a:CheckDate>2010-07-02T00:00:00</a:CheckDate><a:TransactionStatus>Confirmed</a:TransactionStatus></a:SubIdStatisticsRecord></a:Records></SubIdStatisticsRecords></GetSubIdStatisticsResponse></s:Body></s:Envelope>
