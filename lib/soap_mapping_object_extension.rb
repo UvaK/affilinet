@@ -13,9 +13,9 @@ module SOAP
       protected
       
       def find_records
-        tmp = match_condition(self, '.*')
-        if tmp2 = match_condition(tmp,'records')
-          if item = match_condition(tmp2, 'record')
+        tmp = return_obj_by_condition(self, '.*')
+        if tmp2 = return_obj_by_condition(tmp,'records')
+          if item = return_obj_by_condition(tmp2, 'record')
             if item.is_a?(Array)
               return item
             else
@@ -26,7 +26,7 @@ module SOAP
         return []
       end
 
-      def match_condition(obj, condition)
+      def return_obj_by_condition(obj, condition)
         (obj.methods - SOAP::Mapping::Object.instance_methods).each do |i|
           if i =~ Regexp.new(condition, true)
             return obj.send(i)
