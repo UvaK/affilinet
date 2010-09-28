@@ -8,8 +8,8 @@ class TestAffilinet < ActiveSupport::TestCase
     setup do
       #$DEBUG = true
       @dev_env = true
-      @user = 'Users.1.1589' # !!! Replace with your developer account credentials
-      @password = 'nochance' # !!! Replace with your developer account credentials
+      @user = 'XXXX' # !!! Replace with your developer account credentials
+      @password = 'XXXX' # !!! Replace with your developer account credentials
 
       @client = HTTPClient.new(nil, "test")
       @client.debug_dev = ''
@@ -23,10 +23,9 @@ class TestAffilinet < ActiveSupport::TestCase
     context "API class" do
 
       should "authenticate a user" do
-        api = Affilinet.new(@user, @password, :developer => @dev_env).statistics
-        token = api.send(:get_valid_token)
-        assert_not_nil token
-        assert token.is_a?(String)
+        Affilinet::API.init(@user, @password, :developer => @dev_env)
+        assert_not_nil Affilinet::API.get_valid_token
+        assert Affilinet::API.token.is_a?(String)
       end
 
     end
@@ -38,12 +37,13 @@ class TestAffilinet < ActiveSupport::TestCase
       end
 
       should 'call method get_sub_id_statistics' do
-        webs = Affilinet.new(@user, @password, :developer => @dev_env ).statistics
+        Affilinet::API.init(@user, @password, :developer => @dev_env )
       
         # make sure the functions are called
-        mock.proxy(webs).method_missing(:get_sub_id_statistics, anything)
+        mock.proxy(Affilinet::Statistics).request.with_any_args
+        mock.proxy(Affilinet::Statistics).get_sub_id_statistics.with_any_args
 
-        res = webs.get_sub_id_statistics({
+        res = Affilinet::Statistics.get_sub_id_statistics({
             :StartDate => SOAP::SOAPDateTime.new(Date.yesterday),
             :EndDate => SOAP::SOAPDateTime.new(Date.yesterday),
             :ValuationType => 'DateOfRegistration',
@@ -69,12 +69,12 @@ class TestAffilinet < ActiveSupport::TestCase
       end
 
       should 'call method get_sales_leads_statistics' do
-        webs = Affilinet.new(@user, @password, :developer => @dev_env ).statistics
+        Affilinet::API.init(@user, @password, :developer => @dev_env )
 
         # make sure the functions are called
-        mock.proxy(webs).method_missing(:get_sales_leads_statistics, anything)
+        mock.proxy(Affilinet::Statistics).request.with_any_args
 
-        res = webs.get_sales_leads_statistics({
+        res = Affilinet::Statistics.get_sales_leads_statistics({
             :StartDate => SOAP::SOAPDateTime.new('01/01/2009'),
             :EndDate => SOAP::SOAPDateTime.new('01/01/2009'),
             :ValuationType => 'DateOfRegistration',
@@ -88,21 +88,19 @@ class TestAffilinet < ActiveSupport::TestCase
       end
 
       should 'call method get_sub_id_statistics (response mocked)' do
-        webs = Affilinet.new(@user, @password, :developer => @dev_env ).statistics
-
         # set xml body response and http-header from factory
         @client.test_loopback_http_response << File.read('./' + File.dirname(__FILE__) + '/fixtures/get_sub_id_statistics.soap_response')
-        any_instance_of(Affilinet::WebService) do |o|
-            mock(o).get_valid_token { "test_auth_token" }
-        end
+        mock(Affilinet::API).get_valid_token { "test_auth_token" }
 
         # mock response from affilinet
         mock(HTTPClient).new(nil,"RUBYJEDI-SOAP4R/1.5.8").times(any_times) { @client }
 
         # make sure the functions are called
-        mock.proxy(webs).method_missing('get_sub_id_statistics', anything)
+        mock.proxy(Affilinet::Statistics).request.with_any_args
+        mock.proxy(Affilinet::Statistics).get_sub_id_statistics.with_any_args
 
-        res = webs.get_sub_id_statistics({
+
+        res = Affilinet::Statistics.get_sub_id_statistics({
             :StartDate => SOAP::SOAPDateTime.new('01/07/2010'),
             :EndDate => SOAP::SOAPDateTime.new('01/07/2010'),
             :ValuationType => 'DateOfRegistration',
@@ -115,11 +113,9 @@ class TestAffilinet < ActiveSupport::TestCase
       end
 
       should 'not respond when wrong module is used for function call' do
-        webs = Affilinet.new(@user, @password, :developer => @dev_env ).product
-
-        mock.proxy(webs).method_missing(:get_sub_id_statistics, anything)
+        mock(Affilinet::Product).request.with_any_args.times(0)
         assert_raise(NoMethodError) do
-          res = webs.get_sub_id_statistics({
+          res = Affilinet::Product.get_sub_id_statistics({
               :StartDate => SOAP::SOAPDateTime.new('01/07/2010'),
               :EndDate => SOAP::SOAPDateTime.new('01/07/2010'),
               :ValuationType => 'DateOfRegistration',
@@ -132,12 +128,12 @@ class TestAffilinet < ActiveSupport::TestCase
       end
 
       should 'call method get_program_statistics' do
-        webs = Affilinet.new(@user, @password, :developer => @dev_env ).statistics
+        Affilinet::API.init(@user, @password, :developer => @dev_env )
 
         # make sure the functions are called
-        mock.proxy(webs).method_missing(:get_program_statistics, anything)
+        mock.proxy(Affilinet::Statistics).request.with_any_args
 
-        res = webs.get_program_statistics({
+        res = Affilinet::Statistics.get_program_statistics({
             :StartDate => SOAP::SOAPDateTime.new(Date.yesterday),
             :EndDate => SOAP::SOAPDateTime.new(Date.yesterday),
             :ValuationType => 'DateOfRegistration',
