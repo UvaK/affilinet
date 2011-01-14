@@ -12,6 +12,7 @@ begin
     gem.authors = ["adyard GmbH"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     gem.add_dependency "soap4r", ">= 1.5.8"
+    gem.add_dependency "httpclient"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
