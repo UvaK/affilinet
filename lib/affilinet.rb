@@ -13,7 +13,7 @@ class Affilinet
     :program_list => '/V2.0/PublisherProgram.svc?wsdl'
   }.each do |key, wsdl|
     define_method(key) do
-      Affilinet::WebService.new(wsdl, @user, @password, @base_url)
+      Affilinet::WebService.new(wsdl, @user, @password, @base_url, @web_service_type)
     end
   end
 
@@ -23,15 +23,17 @@ class Affilinet
     @base_url = options[:developer] ? 'https://developer-api.affili.net' : 'https://api.affili.net'
     @user = user
     @password = password
+    @web_service_type  = options[:web_service_type] || 'Publisher'
   end
 
   class WebService
 
-    def initialize(wsdl, user, password, url)
+    def initialize(wsdl, user, password, url, type)
       @wsdl = wsdl
       @user = user
       @password = password
       @base_url = url
+      @web_service_type = type
     end
 
     # checks against the wsdl if method is supported and raises an error if not
@@ -68,7 +70,7 @@ class Affilinet
       @token = soap_driver("/V2.0/Logon.svc?wsdl").logon({
           :Username => @user,
           :Password => @password,
-          :WebServiceType => 'Publisher',
+          :WebServiceType => @web_service_type,
           :DeveloperSettings => { :SandboxPublisherID => 403233 }
         })
       @created = Time.now
