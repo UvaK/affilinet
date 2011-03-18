@@ -10,6 +10,21 @@ module SOAP
         find_records.count &block
       end
 
+      def to_hash
+        result = {}.with_indifferent_access
+        __xmlele.map do |name, value|
+          result[name.name.underscore] = case value
+                                         when SOAP::Mapping::Object
+                                           value.to_hash
+                                         when Array
+                                           value.map{|v| v.is_a?(SOAP::Mapping::Object) ? v.to_hash : v}
+                                         else
+                                           value
+                                         end
+        end
+        result
+      end
+
       protected
 
       def find_records
