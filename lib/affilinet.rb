@@ -1,5 +1,5 @@
 require 'rubygems'
-gem 'soap4r'
+gem 'rubyjedi-soap4r'
 require 'soap_mapping_object_extension'
 require 'soap/wsdlDriver'
 
